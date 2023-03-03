@@ -45,7 +45,7 @@
     
     
     
-            //making word a global variable, so that we can access anywhere
+            //making word a global variable, so that i can access to it from  anywhere
             //showing correct and  wrong letters here
 
             let word,maxGuesses, corrects = [], incorrects = []; //resetting all values to default
@@ -58,11 +58,11 @@
     
                 //maxGuesses is 8 by default
     
-                maxGuesses = 8; corrects = []; incorrects = [];
+                maxGuesses = 8; 
+                corrects = []; 
+                incorrects = [];
     
                 console.log(word);
-    
-    
     
                 hint.innerText = randomObj.hint;
     
@@ -70,17 +70,11 @@
     
                 wrongLetter.innerText = incorrects;
     
-    
-    
-    
-    
-    
-    
-                let html = "";
+                var html = "";
     
                 for (var i=0; i< word.length; i++){
     
-                    html += `<input type="text" disabled>`;
+                    html += "<input type=Text disabled>";
     
                 }
     
@@ -92,8 +86,6 @@
     
             randomWord();
     
-            
-    
             //Getting user pressed key
     
             function initGame(e) {
@@ -104,9 +96,9 @@
     
                 //lets restrict the user from typing the same key twice
     
-                if(key.match(/^[A-Za-z]+$/) && !incorrects.includes(` ${key}`)
+                if(key.match(/^[A-Za-z]+$/) && (!incorrects.includes(key))
     
-                && !corrects.includes(key)){
+                && (!corrects.includes(key))){
     
                     console.log(key);
     
@@ -114,11 +106,9 @@
     
                     if(word.includes(key)){//if user letter found in the word
     
-    
-    
                         //lets sow the found letter in the input
     
-                        for(let i = 0; i < word.length; i++){
+                        for(var i = 0; i < word.length; i++){
     
                             //showing matched letter in the input value
     
@@ -131,14 +121,12 @@
                             }
     
                         }
+                        }
+                    else{
     
-                    }else{
-    
-                        maxGuesses--; //decrement of maxGuesses by 1
-    
+                        maxGuesses--; 
                         //lets add space between the wrong letters
-    
-                        incorrects.push(` ${key}`);
+                        incorrects.push(key);
     
                     }
     
@@ -159,45 +147,34 @@
     
     
                 //lets show alert after some delay, so the user entered key appear there
-    
-                setTimeout(() => {
-    
-                    if(corrects.length === word.length){
-    
-                        alert(`Congrats! You found the word. ${word.toUpperCase()}`);
-    
-                        randomWord(); //calling random word function, so the game reset
-    
+                setTimeout(function() {
+                    if (corrects.length === word.length) {
+                      alert("Congrats! You found the word. " + word.toUpperCase());
+                      randomWord(); //invoking randomWord function, so the game reset
+                    } else if (maxGuesses < 1) {
+                      //if user id not find all the letters
+                      alert("Game over! you don't have remaining guesses");
+                      for (var i = 0; i < word.length; i++) {
+                        //show all letters in the input
+                        inputs.querySelectorAll("input")[i].value = word[i];
+                      }
                     }
-    
-                    else if(maxGuesses < 1){//if user id not find all the letters
-    
-                        alert("Game over! you don't have remaining guesses");
-    
-                        for(var i = 0; i < word.length; i++){
-    
-                            //show all letters in the input
-    
-                            inputs.querySelectorAll("input")[i].value = word[i];
-    
-                        }
-    
-                    }
-    
-                });
+                  }, 1000); // Added a delay time of 1000milliseceonds before executing the code inside the function
+                  
     
             }
-    
-    
     
             resetBtn.addEventListener("click", randomWord);
     
             typingInput.addEventListener("input", initGame);
     
-            //There is no key event on phone, so user can activate the keyboard by click on the given input boxes
-    
-            inputs.addEventListener("click", () => typingInput.focus());
-    
-            //automatically focusing input when user press any key
-    
-            document.addEventListener("keydown", () => typingInput.focus());
+         //There is no key event on phone, so user can activate the keyboard by click on the given input boxes
+          inputs.addEventListener("click", function() {
+            typingInput.focus();
+             });
+  
+          //automatically focusing input when user press any key
+            document.addEventListener("keydown", function() {
+            typingInput.focus();
+           });
+  
